@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,12 +16,12 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHolder> {
-    ArrayList<Social> socials;
+    ArrayList<Post> posts;
     Context context;
 
-    public SocialAdapter (Context context, ArrayList<Social> socials) {
+    public SocialAdapter (Context context, ArrayList<Post> posts) {
         this.context = context;
-        this.socials = socials;
+        this.posts = posts;
     }
 
     @NonNull
@@ -33,34 +34,29 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
     @Override
     public void onBindViewHolder(@NonNull SocialHolder socialHolder, int i) {
         // fill image and texts
-        Glide.with(socialHolder.imageView.getContext()).load(socials.get(i).photoURL).into(socialHolder.imageView);
-        socialHolder.eventName.setText(socials.get(i).eventName);
+        Glide.with(socialHolder.imageView.getContext()).load(posts.get(i).imageURL).into(socialHolder.imageView);
         AssetManager am = context.getApplicationContext().getAssets();
         Typeface proxima = Typeface.createFromAsset(am,  "fonts/ProximaNova-Regular.otf");
-        Typeface proxima_bold = Typeface.createFromAsset(am,  "fonts/ProximaNova-Bold.otf");
-        socialHolder.eventName.setTypeface(proxima_bold);
-        socialHolder.eventPosterEmail.setTypeface(proxima);
-        socialHolder.rsvpNum.setTypeface(proxima);
-        socialHolder.eventPosterEmail.setText(socials.get(i).email);
-        socialHolder.rsvpNum.setText("RSVP: " + Integer.toString(socials.get(i).rsvpNum));
+        socialHolder.posterEmail.setTypeface(proxima);
+        socialHolder.posterCaption.setTypeface(proxima);
+        socialHolder.posterEmail.setText(posts.get(i).posterEmail);
+        socialHolder.posterCaption.setText(posts.get(i).posterCaption);
     }
 
     @Override
     public int getItemCount() {
-        return socials.size();
+        return posts.size();
     }
 
     public class SocialHolder extends RecyclerView.ViewHolder {
-        de.hdodenhof.circleimageview.CircleImageView imageView;
-        TextView eventName;
-        TextView eventPosterEmail;
-        TextView rsvpNum;
+        ImageView imageView;
+        TextView posterEmail;
+        TextView posterCaption;
         public SocialHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.eventImage);
-            eventName = itemView.findViewById(R.id.eventName);
-            eventPosterEmail = itemView.findViewById(R.id.eventPosterEmail);
-            rsvpNum = itemView.findViewById(R.id.eventRSVPNum);
+            imageView = itemView.findViewById(R.id.postImage);
+            posterEmail = itemView.findViewById(R.id.posterEmail);
+            posterCaption = itemView.findViewById(R.id.posterCaption);
         }
     }
 
