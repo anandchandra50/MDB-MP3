@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MDB Socials</string>
+    <string name="login_failed">Invalid email or password</string>
+    <string name="registration_failed">Registration failed, please retry</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="enter_password">Please enter a password</string>
+    <string name="password_length">Password must be at least 6 characters long</string>
+    <string name="passwords_match">Passwords must match</string>
+</resources>
