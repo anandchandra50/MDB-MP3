@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +33,9 @@ import java.io.InputStream;
 public class AddSocial extends AppCompatActivity {
 
     private ImageView uploadImage;
-    private TextView imageDescription;
-    private Button uploadImageButton;
+    private EditText eventName;
+    private EditText eventDescription;
+    private Button createPostButton;
     private boolean selectedPhoto = false;
 
     private StorageReference storageRef;
@@ -46,9 +48,10 @@ public class AddSocial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_social);
 
-        uploadImage = findViewById(R.id.uploadImage);
-        imageDescription = findViewById(R.id.uploadImageCaption);
-        uploadImageButton = findViewById(R.id.uploadImageButton);
+        uploadImage = findViewById(R.id.createEventImage);
+        eventName = findViewById(R.id.createEventName);
+        eventDescription = findViewById(R.id.createEventDesc);
+        createPostButton = findViewById(R.id.createEventButton);
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +63,7 @@ public class AddSocial extends AppCompatActivity {
             }
         });
 
-        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+        createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!selectedPhoto) {
@@ -86,15 +89,18 @@ public class AddSocial extends AppCompatActivity {
         }
         final String postID = databaseRef.push().getKey();
         final String userEmail = currentUser.getEmail();
-        final String caption = imageDescription.getText().toString();
+        final String name = eventName.getText().toString();
+        final String description = eventDescription.getText().toString();
+
+
 
         storageRef.child(postID).putFile(imageURI)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // upload to database
-                        Uri test = taskSnapshot.getDownloadUrl();
-                        Post post = new Post(userEmail, caption, test.toString());
+                        Uri photoURL = taskSnapshot.getDownloadUrl();
+                        Social post = new Social(userEmail, name, description, photoURL.toString(), 0);
                         databaseRef.child(postID).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

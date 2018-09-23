@@ -24,7 +24,7 @@ import java.util.Collections;
 
 public class SocialsActivity extends AppCompatActivity {
 
-    private ArrayList<Post> posts;
+    private ArrayList<Social> posts;
     private DatabaseReference ref;
     private SocialAdapter adapter;
 
@@ -33,7 +33,9 @@ public class SocialsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_socials);
 
-        fetchData();
+//        fetchData();
+
+        addTestData();
 
         FloatingActionButton addPost = findViewById(R.id.fab);
         addPost.setOnClickListener(new View.OnClickListener() {
@@ -61,11 +63,11 @@ public class SocialsActivity extends AppCompatActivity {
                 posts.clear();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    String posterEmail = postSnapshot.child("posterEmail").getValue().toString();
-                    String posterCaption = postSnapshot.child("posterCaption").getValue().toString();
-                    String imageURL = postSnapshot.child("imageURL").getValue().toString();
-                    Post post = new Post(posterEmail, posterCaption, imageURL);
-                    posts.add(post);
+//                    String posterEmail = postSnapshot.child("posterEmail").getValue().toString();
+//                    String posterCaption = postSnapshot.child("posterCaption").getValue().toString();
+//                    String imageURL = postSnapshot.child("imageURL").getValue().toString();
+//                    Post post = new Post(posterEmail, posterCaption, imageURL);
+//                    posts.add(post);
                 }
                 Collections.reverse(posts);
                 adapter.notifyDataSetChanged();
@@ -80,9 +82,11 @@ public class SocialsActivity extends AppCompatActivity {
 
     private void addTestData() {
         posts = new ArrayList<>();
-        Post a = new Post("alsdkfj@gmail.com",
-                "my image",
-                "https://www.planwallpaper.com/static/images/abstract-colourful-cool-wallpapers-55ec7905a6a4f.jpg");
+        Social a = new Social("alsdkfj@gmail.com",
+                "test event",
+                "test event description",
+                "https://www.planwallpaper.com/static/images/abstract-colourful-cool-wallpapers-55ec7905a6a4f.jpg",
+                20);
         posts.add(a);
         posts.add(a);
     }

@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     signIn(email, pass);
                 }
                 break;
-            case R.id.createUserButton:
+            case R.id.signupButton:
                 Intent i = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(i);
                 break;
