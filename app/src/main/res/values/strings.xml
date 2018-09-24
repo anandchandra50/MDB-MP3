@@ -6,4 +6,9 @@
     <string name="enter_password">Please enter a password</string>
     <string name="password_length">Password must be at least 6 characters long</string>
     <string name="passwords_match">Passwords must match</string>
+    <string name="are_going">You are going</string>
+    <string name="not_going">You are not going</string>
+    <string name="cancel_rsvp">Cancel RSVP</string>
+    <string name="rsvp">RSVP</string>
+    <string name="rsvp_error">Error changing RSVP status</string>
 </resources>

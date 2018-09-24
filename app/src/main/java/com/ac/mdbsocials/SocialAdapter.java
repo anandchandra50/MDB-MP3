@@ -18,11 +18,14 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHolder> {
     ArrayList<Social> posts;
+    ArrayList<String> userRSVPList;
     Context context;
 
-    public SocialAdapter (Context context, ArrayList<Social> posts) {
+    public SocialAdapter (Context context, ArrayList<Social> posts, ArrayList<String> userRSVPList) {
         this.context = context;
         this.posts = posts;
+        this.userRSVPList = userRSVPList;
+        System.out.println(userRSVPList);
     }
 
     @NonNull
@@ -44,7 +47,11 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
         socialHolder.eventPosterEmail.setTypeface(proxima);
         socialHolder.rsvpNum.setTypeface(proxima);
         socialHolder.eventPosterEmail.setText(posts.get(i).email);
-        socialHolder.rsvpNum.setText("RSVP: " + Integer.toString(posts.get(i).rsvpNum));
+        String rsvpStatus = "RSVP: " + Integer.toString(posts.get(i).rsvpNum);
+        if (userRSVPList.contains(posts.get(i).id)) {
+            rsvpStatus = rsvpStatus + " (going)";
+        }
+        socialHolder.rsvpNum.setText(rsvpStatus);
     }
 
     @Override
@@ -69,6 +76,7 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
                 public void onClick(View v) {
                     Intent i = new Intent(context, EventDetailsActivity.class);
                     i.putExtra("post", posts.get(getAdapterPosition()));
+                    i.putExtra("user_rsvp", userRSVPList.contains(posts.get(getAdapterPosition()).id));
                     i.addFlags(FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 }

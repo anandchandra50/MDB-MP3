@@ -29,6 +29,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.util.Date;
 
 public class AddSocial extends AppCompatActivity {
 
@@ -73,6 +75,7 @@ public class AddSocial extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void uploadPicture() {
@@ -93,14 +96,14 @@ public class AddSocial extends AppCompatActivity {
         final String description = eventDescription.getText().toString();
 
 
-
         storageRef.child(postID).putFile(imageURI)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // upload to database
                         Uri photoURL = taskSnapshot.getDownloadUrl();
-                        Social post = new Social(userEmail, name, description, photoURL.toString(), 0);
+                        Date current = new Date();
+                        Social post = new Social(postID, userEmail, name, description, photoURL.toString(), 0, current.getTime());
                         databaseRef.child(postID).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -116,7 +119,6 @@ public class AddSocial extends AppCompatActivity {
             }
         });
 
-        databaseRef.child(postID);
     }
 
     @Override

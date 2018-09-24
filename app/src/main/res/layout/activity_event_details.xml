@@ -7,73 +7,129 @@
     tools:context=".EventDetailsActivity">
 
     <TextView
-        android:id="@+id/detailsRSVPDesc"
-        android:layout_width="145dp"
-        android:layout_height="55dp"
-        android:gravity="center_vertical"
-        android:text="You have not RSVP'ed"
-        android:textColor="#000000"
-        android:textSize="18dp"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="221dp" />
-
-    <TextView
         android:id="@+id/detailsPosterEmail"
-        android:layout_width="293dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
-        android:text="Post Name"
+        android:text="Poster Email"
         android:textColor="#000000"
         android:textSize="18dp"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="81dp" />
+        android:fontFamily="@font/proxima_nova_regular"
+        app:layout_constraintBottom_toTopOf="@+id/detailsEventImage"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/detailsName" />
 
     <TextView
         android:id="@+id/detailsRSVP"
-        android:layout_width="145dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="RSVP Num"
         android:textColor="#000000"
         android:textSize="18dp"
-        tools:layout_editor_absoluteX="182dp"
-        tools:layout_editor_absoluteY="153dp" />
+        android:fontFamily="@font/proxima_nova_regular"
+        app:layout_constraintBottom_toTopOf="@+id/detailsEventDesc"
+        app:layout_constraintEnd_toStartOf="@+id/detailsHasRSVP"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/detailsEventImage" />
+
+    <TextView
+        android:id="@+id/detailsHasRSVP"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="Have RSVP'ed"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        android:fontFamily="@font/proxima_nova_regular"
+        app:layout_constraintBottom_toTopOf="@+id/detailsEventDesc"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/detailsRSVP"
+        app:layout_constraintTop_toBottomOf="@+id/detailsEventImage" />
 
     <TextView
         android:id="@+id/detailsEventDesc"
-        android:layout_width="287dp"
-        android:layout_height="133dp"
-        android:text="Post Name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:text="Post Details"
         android:textColor="#000000"
+        android:gravity="center_vertical"
         android:textSize="18dp"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="299dp" />
+        android:fontFamily="@font/proxima_nova_regular"
+        app:layout_constraintBottom_toTopOf="@+id/detailsRSVPButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/detailsRSVP" />
 
     <TextView
         android:id="@+id/detailsName"
-        android:layout_width="293dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="Post Name"
         android:textColor="#000000"
-        android:textSize="24dp"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="26dp" />
+        android:textSize="28dp"
+        android:fontFamily="@font/proxima_nova_bold"
+        app:layout_constraintBottom_toTopOf="@+id/detailsPosterEmail"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/detailsEventImage"
-        android:layout_width="125dp"
-        android:layout_height="123dp"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="153dp" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline10"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/detailsPosterEmail"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <Button
         android:id="@+id/detailsRSVPButton"
-        android:layout_width="288dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#5DBCD2"
         android:text="RSVP"
-        tools:layout_editor_absoluteX="36dp"
-        tools:layout_editor_absoluteY="445dp" />
+        android:textSize="18dp"
+        android:fontFamily="@font/proxima_nova_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/detailsEventDesc" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
 </android.support.constraint.ConstraintLayout>
