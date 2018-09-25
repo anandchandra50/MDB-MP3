@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,7 +47,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         // fill in UI
         TextView postName = findViewById(R.id.detailsName);
         TextView posterEmail = findViewById(R.id.detailsPosterEmail);
-        ImageView image = findViewById(R.id.detailsEventImage);
+        de.hdodenhof.circleimageview.CircleImageView image = findViewById(R.id.detailsEventImage);
         rsvpNum = findViewById(R.id.detailsRSVP);
         hasRSVP = findViewById(R.id.detailsHasRSVP);
         TextView description = findViewById(R.id.detailsEventDesc);
