@@ -1,6 +1,7 @@
 package com.ac.mdbsocials;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -122,14 +123,14 @@ public class AddSocial extends AppCompatActivity {
         createPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!selectedPhoto) {
-                    Utils.displayError(getApplicationContext(), getString(R.string.upload_image));
-                } else if (eventName.getText().toString().isEmpty()) {
+                if (eventName.getText().toString().isEmpty()) {
                     Utils.displayError(getApplicationContext(), getString(R.string.enter_event_name));
                 } else if (eventDescription.getText().toString().isEmpty()) {
                     Utils.displayError(getApplicationContext(), getString(R.string.event_description));
                 } else if (eventDay == -1 || eventMonth == -1 || eventYear == -1) {
                     Utils.displayError(getApplicationContext(), getString(R.string.enter_date));
+                } else if (!selectedPhoto) {
+                    Utils.displayError(getApplicationContext(), getString(R.string.upload_image));
                 } else {
                     // everything is there
                     uploadPost();
@@ -140,6 +141,13 @@ public class AddSocial extends AppCompatActivity {
     }
 
     private void uploadPost() {
+        final ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this);
+        nDialog.setTitle("Creating Post");
+        nDialog.setIndeterminate(true);
+        nDialog.setCancelable(false);
+        nDialog.show();
+
         // write to database and to storage
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -175,6 +183,7 @@ public class AddSocial extends AppCompatActivity {
                         databaseRef.child(postID).setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                nDialog.hide();
                                 finish();
                             }
                         });

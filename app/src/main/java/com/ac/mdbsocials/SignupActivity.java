@@ -1,5 +1,6 @@
 package com.ac.mdbsocials;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,13 @@ public class SignupActivity extends AppCompatActivity {
 
     private void createUser(String email, String password) {
         // create user with given email and pass
+        final ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this);
+        nDialog.setTitle("Creating Account");
+        nDialog.setIndeterminate(true);
+        nDialog.setCancelable(false);
+        nDialog.show();
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -61,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                     // display toast
                     displayError(getApplicationContext(), getString(R.string.registration_failed));
                 }
+                nDialog.hide();
             }
         });
     }

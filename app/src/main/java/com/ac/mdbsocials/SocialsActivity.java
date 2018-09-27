@@ -1,5 +1,6 @@
 package com.ac.mdbsocials;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,13 @@ public class SocialsActivity extends AppCompatActivity {
     }
 
     private void fetchData() {
+        final ProgressDialog nDialog;
+        nDialog = new ProgressDialog(this);
+        nDialog.setTitle("Loading Posts");
+        nDialog.setIndeterminate(true);
+        nDialog.setCancelable(false);
+        nDialog.show();
+
         posts = new ArrayList<>();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("posts");
@@ -103,6 +111,7 @@ public class SocialsActivity extends AppCompatActivity {
                 if (fetchedRSVP) {
                     adapter.notifyDataSetChanged();
                 }
+                nDialog.hide();
 
             }
 
