@@ -20,7 +20,9 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".SocialsActivity" />
         <activity android:name=".SocialCard" />
-        <activity android:name=".AddSocial" />
+        <activity android:name=".AddSocial"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".EventDetailsActivity"></activity>
     </application>
 

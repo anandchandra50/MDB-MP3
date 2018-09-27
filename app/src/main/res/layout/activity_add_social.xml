@@ -39,6 +39,7 @@
             android:layout_marginRight="8dp"
             android:fontFamily="@font/proxima_nova"
             android:text="Event Name"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/createEventName"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +63,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
@@ -76,6 +78,7 @@
             android:layout_marginRight="8dp"
             android:fontFamily="@font/proxima_nova"
             android:text="Event Desc"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/createEventDesc"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,17 +104,17 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/createEventImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
+        android:src="@drawable/uploadimage"
         app:layout_constraintBottom_toTopOf="@+id/createEventButton"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="@+id/guideline16"
         app:layout_constraintStart_toEndOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/guideline5"
-        app:srcCompat="@drawable/uploadimage" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline5" />
 
     <Button
         android:id="@+id/createEventButton"
@@ -121,6 +124,7 @@
         android:text="Create Post"
         android:fontFamily="@font/proxima_nova"
         android:textSize="18dp"
+        android:textColor="#ffffff"
         android:background="#5DBCD2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
@@ -147,5 +151,47 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <Switch
+        android:id="@+id/addPostGoingSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/proxima_nova"
+        android:text="Going"
+        android:textColor="@android:color/tab_indicator_text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/createEventButton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toEndOf="@+id/guideline16"
+        app:layout_constraintTop_toBottomOf="@+id/addPostSelectDate" />
+
+    <Button
+        android:id="@+id/addPostSelectDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/proxima_nova_regular"
+        android:text="select date"
+        android:textColor="#07575B"
+        android:textSize="14sp"
+        android:gravity="center_vertical|left"
+        app:layout_constraintBottom_toTopOf="@+id/addPostGoingSwitch"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toEndOf="@+id/guideline16"
+        app:layout_constraintTop_toBottomOf="@+id/guideline5" />
 
 </android.support.constraint.ConstraintLayout>

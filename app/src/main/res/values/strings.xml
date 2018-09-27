@@ -11,4 +11,8 @@
     <string name="cancel_rsvp">Cancel RSVP</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_error">Error changing RSVP status</string>
+    <string name="upload_image">Please Upload an Image</string>
+    <string name="enter_event_name">Please enter an event name.</string>
+    <string name="event_description">Please enter an event description.</string>
+    <string name="enter_date">Please enter a date for the event</string>
 </resources>

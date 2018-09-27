@@ -38,17 +38,14 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
     @Override
     public void onBindViewHolder(@NonNull SocialHolder socialHolder, int i) {
         // fill image and texts
-        Glide.with(socialHolder.imageView.getContext()).load(posts.get(i).photoURL).into(socialHolder.imageView);
-        socialHolder.eventName.setText(posts.get(i).eventName);
-        AssetManager am = context.getApplicationContext().getAssets();
-        Typeface proxima = Typeface.createFromAsset(am,  "fonts/ProximaNova-Regular.otf");
-        Typeface proxima_bold = Typeface.createFromAsset(am,  "fonts/ProximaNova-Bold.otf");
-        socialHolder.eventName.setTypeface(proxima_bold);
-        socialHolder.eventPosterEmail.setTypeface(proxima);
-        socialHolder.rsvpNum.setTypeface(proxima);
-        socialHolder.eventPosterEmail.setText(posts.get(i).email);
-        String rsvpStatus = "RSVP: " + Integer.toString(posts.get(i).rsvpNum);
-        if (userRSVPList.contains(posts.get(i).id)) {
+        Social post = posts.get(i);
+        Glide.with(socialHolder.imageView.getContext()).load(post.photoURL).into(socialHolder.imageView);
+        socialHolder.eventName.setText(post.eventName);
+        socialHolder.eventPosterEmail.setText(post.email);
+        String rsvpStatus = "RSVP: " + Integer.toString(post.rsvpNum);
+        String date = post.month + "/" + post.day + "/" + post.year;
+        socialHolder.eventDate.setText(date);
+        if (userRSVPList.contains(post.id)) {
             rsvpStatus = rsvpStatus + " (going)";
         }
         socialHolder.rsvpNum.setText(rsvpStatus);
@@ -64,13 +61,14 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
         TextView eventName;
         TextView eventPosterEmail;
         TextView rsvpNum;
+        TextView eventDate;
         public SocialHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.eventImage);
             eventName = itemView.findViewById(R.id.eventName);
             eventPosterEmail = itemView.findViewById(R.id.eventPosterEmail);
             rsvpNum = itemView.findViewById(R.id.eventRSVPNum);
-
+            eventDate = itemView.findViewById(R.id.eventDateText);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

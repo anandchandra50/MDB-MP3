@@ -47,6 +47,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         // fill in UI
         TextView postName = findViewById(R.id.detailsName);
         TextView posterEmail = findViewById(R.id.detailsPosterEmail);
+        TextView date = findViewById(R.id.detailsDate);
         de.hdodenhof.circleimageview.CircleImageView image = findViewById(R.id.detailsEventImage);
         rsvpNum = findViewById(R.id.detailsRSVP);
         hasRSVP = findViewById(R.id.detailsHasRSVP);
@@ -59,6 +60,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         currentRSVP = post.rsvpNum;
         String rsvpNumString = "RSVP: " + Integer.toString(currentRSVP);
         rsvpNum.setText(rsvpNumString);
+        String dateText = post.month + "/" + post.day + "/" + post.year;
+        date.setText(dateText);
 
         description.setText(post.eventDescription);
 

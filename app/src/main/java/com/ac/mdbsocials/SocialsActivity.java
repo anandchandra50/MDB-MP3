@@ -83,8 +83,13 @@ public class SocialsActivity extends AppCompatActivity {
                     String email = postSnapshot.child("email").getValue().toString();
                     String eventDescription = postSnapshot.child("eventDescription").getValue().toString();
                     int rsvpNum = Integer.valueOf(postSnapshot.child("rsvpNum").getValue().toString());
+                    int day = Integer.valueOf(postSnapshot.child("day").getValue().toString());
+                    int month = Integer.valueOf(postSnapshot.child("month").getValue().toString());
+                    int year = Integer.valueOf(postSnapshot.child("year").getValue().toString());
                     long timestamp = Long.valueOf(postSnapshot.child("timestamp").getValue().toString());
-                    Social post = new Social(id, email, eventName, eventDescription, photoURL, rsvpNum, timestamp);
+                    Social post = new Social(id, email, eventName,
+                            eventDescription, photoURL,
+                            rsvpNum, day, month, year, timestamp);
                     posts.add(post);
                 }
                 Collections.sort(posts, new Comparator<Social>() {
