@@ -3,6 +3,7 @@ package com.ac.mdbsocials;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHolder> {
@@ -35,10 +38,16 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SocialHolder socialHolder, int i) {
+    public void onBindViewHolder(@NonNull final SocialHolder socialHolder, int i) {
         // fill image and texts
         Social post = posts.get(i);
-        Glide.with(socialHolder.imageView.getContext()).load(post.photoURL).into(socialHolder.imageView);
+//        Glide.with(socialHolder.imageView.getContext()).load(post.photoURL).into(socialHolder.imageView);
+        new Utils.FetchImage() {
+            @Override public void onPostExecute(Bitmap result) {
+                socialHolder.imageView.setImageBitmap(result);
+            }
+        }.execute(post.photoURL);
+
         socialHolder.eventName.setText(post.eventName);
         socialHolder.eventPosterEmail.setText(post.email);
         String rsvpStatus = "RSVP: " + Integer.toString(post.rsvpNum);

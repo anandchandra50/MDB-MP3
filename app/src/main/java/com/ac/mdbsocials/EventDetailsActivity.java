@@ -2,6 +2,7 @@ package com.ac.mdbsocials;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.ExecutionException;
 
 public class EventDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "EventDetailsActivity";
@@ -53,7 +56,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         TextView postName = findViewById(R.id.detailsName);
         TextView posterEmail = findViewById(R.id.detailsPosterEmail);
         TextView date = findViewById(R.id.detailsDate);
-        de.hdodenhof.circleimageview.CircleImageView image = findViewById(R.id.detailsEventImage);
+        final de.hdodenhof.circleimageview.CircleImageView image = findViewById(R.id.detailsEventImage);
         rsvpNum = findViewById(R.id.detailsRSVP);
         hasRSVP = findViewById(R.id.detailsHasRSVP);
         TextView description = findViewById(R.id.detailsEventDesc);
@@ -61,7 +64,13 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         postName.setText(post.eventName);
         posterEmail.setText(post.email);
-        Glide.with(image.getContext()).load(post.photoURL).into(image);
+//        Glide.with(image.getContext()).load(post.photoURL).into(image);
+        new Utils.FetchImage() {
+            @Override public void onPostExecute(Bitmap result) {
+                image.setImageBitmap(result);
+            }
+        }.execute(post.photoURL);
+
         currentRSVP = post.rsvpNum;
         String rsvpNumString = "RSVP: " + Integer.toString(currentRSVP);
         rsvpNum.setText(rsvpNumString);
