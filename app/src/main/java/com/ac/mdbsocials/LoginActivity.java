@@ -29,14 +29,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // check login from Firebase
         mAuth = FirebaseAuth.getInstance();
+
+        // init UI elements
         Button createUser = findViewById(R.id.signupButton);
         createUser.setOnClickListener(this);
 
         Button loginUser = findViewById(R.id.loginButton);
         loginUser.setOnClickListener(this);
-
-        FirebaseAuth.getInstance().signOut();
-
+        
         emailText = findViewById(R.id.loginEmailText);
         passText = findViewById(R.id.loginPasswordText);
     }
@@ -54,6 +54,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+     * Attempt sign in
+     * @param email
+     * @param pass
+     */
     private void signIn(String email, String pass) {
         // check to make sure email and pass are valid first
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -85,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.signupButton:
+                // transition to create user screen
                 Intent i = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(i);
                 break;

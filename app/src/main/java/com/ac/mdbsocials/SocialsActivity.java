@@ -30,10 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 import static java.lang.Math.toIntExact;
 
-public class SocialsActivity extends AppCompatActivity {
+public class SocialsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ArrayList<Social> posts;
-    private DatabaseReference ref;
+    private ArrayList<Social> posts; // list of all posts
+    private DatabaseReference ref; // reference for posts
     private SocialAdapter adapter;
     private String userID;
     private ArrayList<String> userRSVPList; // contains post ID that user rsvp to
@@ -51,15 +51,7 @@ public class SocialsActivity extends AppCompatActivity {
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         fetchData();
 
-        FloatingActionButton addPost = findViewById(R.id.fab);
-        addPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // make new post page
-                Intent i = new Intent(getApplicationContext(), AddSocial.class);
-                startActivity(i);
-            }
-        });
+        findViewById(R.id.fab).setOnClickListener(this);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         adapter = new SocialAdapter(this, posts, userRSVPList);
@@ -67,6 +59,10 @@ public class SocialsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+
+    /**
+     * fetch all data for rsvp and post data
+     */
     private void fetchData() {
         final ProgressDialog nDialog;
         nDialog = new ProgressDialog(this);
@@ -82,7 +78,8 @@ public class SocialsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 posts.clear();
-
+                // I didn't have success with filling it directly into the class
+                // Had an error that mentioned 'constructor with no arguments'
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
                     String id = postSnapshot.child("id").getValue().toString();
@@ -107,6 +104,7 @@ public class SocialsActivity extends AppCompatActivity {
                     }
                 });
 
+                // only update dataset when both RSVP and post data are fetched
                 fetchedPosts = true;
                 if (fetchedRSVP) {
                     adapter.notifyDataSetChanged();
@@ -145,4 +143,13 @@ public class SocialsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                // make new post page
+                Intent i = new Intent(getApplicationContext(), AddSocial.class);
+                startActivity(i);
+        }
+    }
 }

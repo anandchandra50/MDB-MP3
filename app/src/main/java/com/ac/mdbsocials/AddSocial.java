@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -40,7 +41,9 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddSocial extends AppCompatActivity {
+public class AddSocial extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, CompoundButton.OnCheckedChangeListener {
+
+    private static final String TAG = "AddSocial";
 
     private de.hdodenhof.circleimageview.CircleImageView uploadImage;
     private EditText eventName;
@@ -51,10 +54,9 @@ public class AddSocial extends AppCompatActivity {
 
     private boolean selectedPhoto = false;
     private boolean userGoing = true;
-    private int eventMonth = -1;
+    private int eventMonth = -1; // start at -1 to check if it's been set
     private int eventDay = -1;
     private int eventYear = -1;
-    private DatePickerDialog.OnDateSetListener dateListener;
 
     private StorageReference storageRef;
     private DatabaseReference databaseRef;
@@ -74,72 +76,15 @@ public class AddSocial extends AppCompatActivity {
         eventDateButton = findViewById(R.id.addPostSelectDate);
 
         goingSwitch.setChecked(userGoing);
-        goingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                userGoing = isChecked;
-            }
-        });
-
-        uploadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // clicked on image
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, 1);
-            }
-        });
-
-        dateListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = Integer.toString(month + 1) + "/" + Integer.toString(dayOfMonth) + "/" + Integer.toString(year);
-                eventYear = year;
-                eventMonth = month + 1;
-                eventDay = dayOfMonth;
-                eventDateButton.setText(date);
-            }
-        };
-
-        eventDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        AddSocial.this,
-                        R.style.Theme_AppCompat_Light_Dialog_Alert,
-                        dateListener,
-                        year, month, day);
-//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        createPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (eventName.getText().toString().isEmpty()) {
-                    Utils.displayError(getApplicationContext(), getString(R.string.enter_event_name));
-                } else if (eventDescription.getText().toString().isEmpty()) {
-                    Utils.displayError(getApplicationContext(), getString(R.string.event_description));
-                } else if (eventDay == -1 || eventMonth == -1 || eventYear == -1) {
-                    Utils.displayError(getApplicationContext(), getString(R.string.enter_date));
-                } else if (!selectedPhoto) {
-                    Utils.displayError(getApplicationContext(), getString(R.string.upload_image));
-                } else {
-                    // everything is there
-                    uploadPost();
-                }
-            }
-        });
-
+        goingSwitch.setOnCheckedChangeListener(this);
+        uploadImage.setOnClickListener(this);
+        eventDateButton.setOnClickListener(this);
+        createPostButton.setOnClickListener(this);
     }
 
+    /**
+     * Upload new post to firebase
+     */
     private void uploadPost() {
         final ProgressDialog nDialog;
         nDialog = new ProgressDialog(this);
@@ -157,10 +102,7 @@ public class AddSocial extends AppCompatActivity {
         storageRef = storage.getReference("images");
         FirebaseUser currentUser = mAuth.getCurrentUser();
         final String userID = currentUser.getUid();
-        if (currentUser == null) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
-            return;
-        }
+
         final String postID = databaseRef.push().getKey();
         final String userEmail = currentUser.getEmail();
         final String name = eventName.getText().toString();
@@ -192,7 +134,7 @@ public class AddSocial extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.d(TAG, "Failed to post");
             }
         });
 
@@ -201,6 +143,7 @@ public class AddSocial extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // fetched image
         if (resultCode == RESULT_OK) try {
             imageURI = data.getData();
             final InputStream imageStream = getContentResolver().openInputStream(imageURI);
@@ -211,5 +154,58 @@ public class AddSocial extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.createEventImage:
+                // clicked on image
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 1);
+                break;
+            case R.id.addPostSelectDate:
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        AddSocial.this,
+                        R.style.Theme_AppCompat_Light_Dialog_Alert,
+                        this,
+                        year, month, day);
+                dialog.show();
+                break;
+            case R.id.createEventButton:
+                if (eventName.getText().toString().isEmpty()) {
+                    Utils.displayError(getApplicationContext(), getString(R.string.enter_event_name));
+                } else if (eventDescription.getText().toString().isEmpty()) {
+                    Utils.displayError(getApplicationContext(), getString(R.string.event_description));
+                } else if (eventDay == -1 || eventMonth == -1 || eventYear == -1) {
+                    Utils.displayError(getApplicationContext(), getString(R.string.enter_date));
+                } else if (!selectedPhoto) {
+                    Utils.displayError(getApplicationContext(), getString(R.string.upload_image));
+                } else {
+                    // everything is there
+                    uploadPost();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = Integer.toString(month + 1) + "/" + Integer.toString(dayOfMonth) + "/" + Integer.toString(year);
+        eventYear = year;
+        eventMonth = month + 1;
+        eventDay = dayOfMonth;
+        eventDateButton.setText(date);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        userGoing = isChecked;
     }
 }

@@ -20,12 +20,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
 
-public class EventDetailsActivity extends AppCompatActivity {
+public class EventDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "EventDetailsActivity";
     private boolean user_did_rsvp;
     private Social post;
     private DatabaseReference ref;
+    private DatabaseReference rsvpRef;
     private String userID;
     private TextView hasRSVP;
     private Button rsvpButton;
@@ -44,6 +46,8 @@ public class EventDetailsActivity extends AppCompatActivity {
         user_did_rsvp = intent.getExtras().getBoolean("user_rsvp");
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ref = FirebaseDatabase.getInstance().getReference();
+        rsvpRef = ref.child("posts").child(post.id).child("rsvpNum");
+        listenToRSVPStatus();
 
         // fill in UI
         TextView postName = findViewById(R.id.detailsName);
@@ -86,20 +90,31 @@ public class EventDetailsActivity extends AppCompatActivity {
             }
         };
 
-        rsvpButton.setOnClickListener(new View.OnClickListener() {
+        rsvpButton.setOnClickListener(this);
+    }
+
+    /**
+     * Listen to RSVP number for post and update UI if it changes while user is viewing
+     */
+    private void listenToRSVPStatus() {
+        rsvpRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                if (user_did_rsvp) {
-                    // cancel rsvp
-                    ref.child("RSVP").child(userID).child(post.id).removeValue().addOnCompleteListener(callback);
-                } else {
-                    // make rsvp
-                    ref.child("RSVP").child(userID).child(post.id).setValue(post.id).addOnCompleteListener(callback);
-                }
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // value is fetched as an int
+                currentRSVP = Integer.valueOf(dataSnapshot.getValue().toString());
+                String rsvpNumString = "RSVP: " + Integer.toString(currentRSVP);
+                rsvpNum.setText(rsvpNumString);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
 
+    /**
+     * Update RSVP status -- flip to RSVP if not already, vice versa
+     */
     private void updateRSVPStatus() {
         if (user_did_rsvp) {
             // user already rsvped -- make that clear
@@ -110,7 +125,6 @@ public class EventDetailsActivity extends AppCompatActivity {
             rsvpButton.setText(R.string.rsvp);
         }
 
-        DatabaseReference rsvpRef = ref.child("posts").child(post.id).child("rsvpNum");
         rsvpRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
@@ -140,4 +154,19 @@ public class EventDetailsActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.detailsRSVPButton:
+                if (user_did_rsvp) {
+                    // cancel rsvp
+                    ref.child("RSVP").child(userID).child(post.id).removeValue().addOnCompleteListener(callback);
+                } else {
+                    // make rsvp
+                    ref.child("RSVP").child(userID).child(post.id).setValue(post.id).addOnCompleteListener(callback);
+                }
+                break;
+        }
+    }
 }

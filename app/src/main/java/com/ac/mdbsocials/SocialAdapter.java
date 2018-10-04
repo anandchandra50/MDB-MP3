@@ -25,7 +25,6 @@ public class SocialAdapter extends RecyclerView.Adapter<SocialAdapter.SocialHold
         this.context = context;
         this.posts = posts;
         this.userRSVPList = userRSVPList;
-        System.out.println(userRSVPList);
     }
 
     @NonNull
